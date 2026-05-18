@@ -18,15 +18,17 @@ app.use(session({
 }));
 
 //--- MONGOOSE İLE CANLI MONGODB ATLAS BAĞLANTI AYARI ---
-mongoose.connect(process.env.MONGODB_URI) 
-    .then(() => console.log('MongoDB bağlantısı başarılı'))
-    .catch(hata => console.log('MongoDB bağlantısı başarısız:', hata));
+mongoose.connect(process.env.MONGODB_URI, {
+    authSource: 'admin'
+})
+    .then(() => console.log("Hocam MongoDB Atlas bulut veritabanına bağlantı başarıyla sağlandı!"))
+    .catch((hata) => console.log("MongoDB bağlantısı başarısız hocam: ", hata));
 
-//--- API ROTALARINI DAHİL ETME ---
-const uyeRotalari = require('./routes/uyeRotaları');
-app.use(uyeRotalari); // Rota dosyasını uygulamaya dahil ediyorum.
+// --- API ROTALARINI SUNUCUYA TANITMA ---
+const uyeRotalari = require('./routes/uyeRotalari');
+app.use(uyeRotalari);
 
-//--- SUNUCUYU BAŞLATMA ---
+// --- SUNUCUYU AYAĞA KALDIRMA ---
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Sunucu ${PORT} portunda çalışıyor`);
