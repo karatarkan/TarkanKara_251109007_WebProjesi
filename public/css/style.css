@@ -1,0 +1,196 @@
+/* --- GENEL SIFIRLAMA AYARLARI TÜM SAYFALAR İÇİN GEÇERLİ --- */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #121212;
+    color: #ffffff;
+}
+/* --- ÜST MENU (NAVBAR) ALANI --- */
+.t-ust-alan {
+    background-color: #1a1a1a;
+    border-bottom: 3px solid #B22222;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    
+}
+.t-ana-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8px 20px;
+}
+.t-logo-kapsayici {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.t-salon-logosu {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+.t-logo-metin {
+    font-size: 22px;
+    font-weight: bold;
+    color: #B22222;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.t-menu-listesi {
+    display: flex;
+    list-style: none;
+}
+.t-menu-listesi li {
+    margin-left: 25px;
+}
+.t-menu-listesi a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+.t-menu-listesi a:hover {
+    color: #B22222;
+}
+
+/* --- KAPAK FOTOGRAFI VE Z-INDEX ALANI --- */
+.t-kapak-kapsayici {
+    position: relative;
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.t-kapak-resmi {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85)),
+    url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?ixlib=rb-4.0.3')
+    no-repeat center center/cover;
+    z-index: 1;
+}
+.t-karsilama-metni {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 20px;
+}
+.t-karsilama-metni h1 {
+    font-size: 50px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+.t-karsilama-metni p {
+    font-size: 20px;
+    color: #cccccc;
+    margin-bottom: 35px;
+}
+.t-buton-kirmizi {
+    display: inline-block;
+    background-color: #B22222;
+    color:white;
+    padding: 14px 35px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.t-buton-kirmizi:hover {
+    background-color: #8b1414;
+    transform: scale(1.05);
+}
+
+/* --- VİDEO VE HARİTA ALANI --- */
+.t-medya-bolumu {
+    max-width: 1200px;
+    margin: 70px auto;
+    padding: 0 20px;
+}
+.t-bolum-basligi {
+    font-size: 34px;
+    text-transform: uppercase;
+    color: #B22222;
+    margin-bottom: 45px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+.t-medya-ızgara {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+}
+
+.t-video-kutu, .t-harita-kutu {
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #2a2a2a;
+}
+.t-video-kutu h3, .t-harita-kutu h3 {
+    font-size: 18px;
+    color: #ffffff;
+    margin-bottom: 15px;
+    border-left: 4px solid #B22222;
+    padding-left: 10px;
+}
+
+/* ---FOOTER (ALT BILGI) ALANI--- */
+
+.t-alt-alan {
+    background-color: #0b0b0b;
+    padding: 35px 20px;
+    margin-top: 80px;
+    border-top: 2px solid #1a1a1a;
+}
+.t-alt-icerik {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #666;
+    font-size: 14px;
+}
+.t-iletisim-ikonlari {
+    display: flex;
+    gap: 25px;
+}
+.t-iletisim-ikonlari span{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #cccccc;
+}
+.t-iletisim-ikonlari i {
+    color: #B22222;
+}
+@media (max-width: 768px) {
+    .t-medya-ızgara {
+        grid-template-columns: 1fr;
+    }
+    .t-ana-menu {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .t-menu-listesi li {
+        margin: 0 10px;
+    }
+    .t-karsilama-metni h1 {
+        font-size: 32px;
+    }
+}
