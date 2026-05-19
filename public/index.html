@@ -8,39 +8,84 @@
     <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
+
     <header class="t-ust-alan">
-        <nav class="t-ana-menu">
-            <div class="t-logo-kapsayici">
-                <img src="resimler/logo/Karapati-logo.png" alt="KaraPati Fit Club Logo" class="t-salon-logosu">
-                <span class="t-logo-metin">KaraPati Fit Club</span>
+        <nav class="t-ust-nav-bar">
+            <input type="checkbox" id="t-menu-tetikleyici" class="t-menu-tetikleyici">
+            
+            <label for="t-menu-tetikleyici" class="t-hamburger-butonu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <div class="t-hamburger-menü-kapsayici">
+                <div class="t-logo-kapsayici">
+                    <img src="resimler/logo/logoson.png" alt="KaraPati Fit Club Logo" class="t-salon-logosu">
+                    <span class="t-logo-metin">KaraPati Fit Club</span>
+                </div>
+                <ul class="t-menu-listesi">
+                    <li><a href="index.html" class="t-aktif">Ana Sayfa</a></li>
+                    <li><a href="uyeler.html">Üyeler & Paketler</a></li>
+                    <li><a href="giris.html">Giriş / Kayıt</a></li>
+                </ul>
             </div>
-            <ul class="t-menu-listesi">
-                <li><a href="index.html" class="t-aktif">Ana Sayfa</a></li>
-                <li><a href="uyeler.html">Üyeler & Paketler</a></li>
-                <li><a href="giris.html">Giriş / Kayıt</a></li>
-            </ul>
         </nav>
     </header>
 
-    <section class="t-kapak-kapsayici">
-        <div class="t-kapak-resmi"></div>
-        <div class="t-karsilama-metni">
+    <section class="t-tam-ekran-bolum t-bg-acilis" id="t-bolum-1">
+        <div class="t-bolum-icerik">
             <h1>Sınırları Zorlamaya Hazır Mısın?</h1>
             <p>Profesyonel ekip ve modern ekipmanlarla hedeflerine ulaşmanı sağlayacak programlar seni bekliyor!</p>
-            <a href="giris.html" class="t-buton-kirmizi">Aramiza Katil</a>
+            <a href="giris.html" class="t-buton-turuncu">Aramıza Katıl</a>
         </div>
+        <a href="#t-bolum-2" class="t-asagi-ok" onclick="tBolumeKay(event, 't-bolum-2')">
+            <i class="fa-solid fa-chevron-down"></i>
+        </a>
     </section>
 
-    <section class="t-medya-bolumu">
-        <h2 class="t-bolum-basligi">Salonumuz ve Konumumuz</h2>
-        <div class="t-medya-izgara">
-            <div class="t-video-kutusu">
-                <h3>Motisyonunuzu Yükseltin</h3>
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/VIDEO_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
-            </div>
-            <div class="t-harita-kutusu">
-                <h3>Bizi Zİyaret Et</h3>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.944444444444!2d29.076666666666665!3d41.01666666666667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14b5b5b5b5b5b5b5%3A0x1!2sKaraPati%20Fit%20Club!5e0!3m2!1sen!2str!4v1634567890123!5m2!1sen!2str" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <section class="t-tam-ekran-bolum t-bg-kardiyo" id="t-bolum-2">
+        <a href="#t-bolum-1" class="t-yukari-ok" onclick="tBolumeKay(event, 't-bolum-1')">
+            <i class="fa-solid fa-chevron-up"></i>
+        </a>
+        <div class="t-bolum-icerik">
+            <h2>Kardiyo & Kondisyon</h2>
+            <p>Yağ yakımını hızlandıran, akciğer kapasiteni maksimuma çıkaran son teknoloji koşu bantları ve bisikletlerle sınırlarını test et.</p>
+            <a href="uyeler.html" class="t-buton-kirmizi">Paketleri İncele</a>
+        </div>
+        <a href="#t-bolum-3" class="t-asagi-ok" onclick="tBolumeKay(event, 't-bolum-3')">
+            <i class="fa-solid fa-chevron-down"></i>
+        </a>
+    </section>
+
+    <section class="t-tam-ekran-bolum t-bg-agirlik" id="t-bolum-3">
+        <a href="#t-bolum-2" class="t-yukari-ok" onclick="tBolumeKay(event, 't-bolum-2')">
+            <i class="fa-solid fa-chevron-up"></i>
+        </a>
+        <div class="t-bolum-icerik">
+            <h2>Serbest Ağırlık Alanı</h2>
+            <p>Geniş dambıl istasyonları, squat rackler ve izole makinelerle kas kütleni artırmak için ihtiyacın olan her şey burada.</p>
+        </div>
+        <a href="#t-bolum-4" class="t-asagi-ok" onclick="tBolumeKay(event, 't-bolum-4')">
+            <i class="fa-solid fa-chevron-down"></i>
+        </a>
+    </section>
+
+    <section class="t-tam-ekran-bolum t-bg-medya" id="t-bolum-4">
+        <a href="#t-bolum-3" class="t-yukari-ok" onclick="tBolumeKay(event, 't-bolum-3')">
+            <i class="fa-solid fa-chevron-up"></i>
+        </a>
+        <div class="t-medya-kapsayici-ozel">
+            <h2 class="t-bolum-basligi">Salonumuz ve Konumumuz</h2>
+            <div class="t-medya-ızgara">
+                <div class="t-video-kutu">
+                    <h3>Motivasyonunuzu Yükseltin</h3>
+                    <iframe width="100%" height="220px" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
+                </div>
+                <div class="t-harita-kutu">
+                    <h3>Bizi Ziyaret Et</h3>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.944444444444!2d29.076666666666665!3d41.01666666666667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14b5b5b5b5b5b5b5%3A0x1!2sKaraPati%20Fit%20Club!5e0!3m2!1sen!2str!4v1634567890123!5m2!1sen!2str" width="100%" height="220px" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
             </div>
         </div>
     </section>
@@ -49,12 +94,24 @@
         <div class="t-alt-icerik">
             <p>© 2026 Tarkan Kara - Tüm Hakları Saklıdır. Ödev Projesidir.</p>
             <div class="t-iletisim-ikonlari">
-                <span><i class="fab fa-phone"></i></span>
-                <span><i class="fab fa-envelope"></i></span>
-                <span><i class="fab fa-map-marker-alt"></i></span>   
+                <span><i class="fa-solid fa-phone"></i> +90 555 555 55 55</span>
+                <span><i class="fa-solid fa-envelope"></i> info@karapatifitclub.com</span>
+                <span><i class="fa-solid fa-location-dot"></i> Kozyatağı, Kadıköy / İstanbul</span>   
             </div>
         </div>
     </footer>
-    
+
+    <script>
+        // Hocam tekerlek ve dokunmatik kaydırmaları devre dışı bıraktım
+        window.addEventListener('wheel', function(e) { e.preventDefault(); }, { passive: false });
+        window.addEventListener('touchmove', function(e) { e.preventDefault(); }, { passive: false });
+
+        // Butonlara tıklandığında yumuşak geçiş sağlayan yerli fonksiyonumuz
+        function tBolumeKay(event, bolumId) {
+            event.preventDefault();
+            const hedef = document.getElementById(bolumId);
+            hedef.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

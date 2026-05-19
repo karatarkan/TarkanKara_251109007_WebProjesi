@@ -4,7 +4,25 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "mongodb": "^7.2.0",
-    "mongodb-memory-server": "^11.1.0",
     "mongoose": "^9.6.2"
-  }
+  },
+  "name": "tarkankara_251109007_webprojesi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test-baglanti.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karatarkan/TarkanKara_251109007_WebProjesi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/karatarkan/TarkanKara_251109007_WebProjesi/issues"
+  },
+  "homepage": "https://github.com/karatarkan/TarkanKara_251109007_WebProjesi#readme"
 }

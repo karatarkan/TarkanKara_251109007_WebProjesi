@@ -1,3 +1,6 @@
+
+// MongoAtlas ile bağlantıyı saatlerce kuramadım sonunda +srv protokolün silip
+// sadece mongodb:// şeklinde bağlantıyı kurunca oldu. O yüzden bağlantı adresini .env dosyasına mongodb:// şeklinde ekledim.
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session'); //Kullanici oturum yönetimi için gerekli.
@@ -18,11 +21,9 @@ app.use(session({
 }));
 
 //--- MONGOOSE İLE CANLI MONGODB ATLAS BAĞLANTI AYARI ---
-mongoose.connect(process.env.MONGODB_URI, {
-    authSource: 'admin'
-})
-    .then(() => console.log("Hocam MongoDB Atlas bulut veritabanına bağlantı başarıyla sağlandı!"))
-    .catch((hata) => console.log("MongoDB bağlantısı başarısız hocam: ", hata));
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log("MongoDB Atlas bulut veritabanına bağlantı başarıyla sağlandı!"))
+    .catch((hata) => console.log("MongoDB bağlantısı başarısız: ", hata));
 
 // --- API ROTALARINI SUNUCUYA TANITMA ---
 const uyeRotalari = require('./routes/uyeRotalari');
