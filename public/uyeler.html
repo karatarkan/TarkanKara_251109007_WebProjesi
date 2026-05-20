@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Üyelerimiz & Üyelik Paketleri - KaraPati Fit Club</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css"> 
+</head>
+<body class="t-sayfa-akici"> <header class="t-ust-alan">
+        <nav class="t-ust-nav-bar">
+            <input type="checkbox" id="t-menu-tetikleyici" class="t-menu-tetikleyici">
+            
+            <label for="t-menu-tetikleyici" class="t-hamburger-butonu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <div class="t-hamburger-menü-kapsayici">
+                <div class="t-logo-kapsayici">
+                    <img src="resimler/logo/logoson.png" alt="KaraPati Fit Club Logo" class="t-salon-logosu">
+                    <span class="t-logo-metin">KaraPati Fit Club</span>
+                </div>
+                <ul class="t-menu-listesi">
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="uyeler.html" class="t-aktif">Üyeler & Paketler</a></li>
+                    <li><a href="giris.html">Giriş / Kayıt</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="t-sayfa-kapsami">
+        
+        <section class="t-tablo-bolumu">
+            <h2 class="t-sayfa-baslik">Üyelik Detayları</h2>
+            <p class="t-sayfa-alt-metin">Fiyatları listeleyin veya paket özelliklerini detaylıca karşılaştırın.</p>
+            
+            <div class="t-tablo-degistirici-kapsayici">
+                <button type="button" id="btn-fiyat" class="t-tablo-buton t-tablo-buton-aktif" onclick="tTabloGoster('fiyat')">
+                    <i class="fa-solid fa-tags"></i> Fiyat Listesi
+                </button>
+                <button type="button" id="btn-karsilastir" class="t-tablo-buton" onclick="tTabloGoster('karsilastir')">
+                    <i class="fa-solid fa-code-compare"></i> Paketleri Karşılaştır
+                </button>
+            </div>
+            
+            <div id="t-tablo-fiyat-alani" class="t-tablo-kapsayici">
+                <table class="t-fiyat-tablosu">
+                    <thead>
+                        <tr>
+                            <th>Paket Adı</th>
+                            <th>Süre</th>
+                            <th>Kapsam / Avantajlar</th>
+                            <th>Aylık Ücret</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Standart Üyelik</td>
+                            <td>1 Ay</td>
+                            <td>Sadece Fitness ve Kardiyo Alanı Kullanımı</td>
+                            <td>850 TL</td>
+                        </tr>
+                        <tr>
+                            <td>Gold Üyelik</td>
+                            <td>3 Ay</td>
+                            <td>Fitness + Havuz Kullanımı + 2 Seans Eğitmen Desteği</td>
+                            <td>1200 TL</td>
+                        </tr>
+                        <tr>
+                            <td>Premium Savaşçı</td>
+                            <td>6 Ay</td>
+                            <td>Tüm Alanlar + Sınırsız Kum Torbası ve Özel Ring Alanı + Beslenme Programı</td>
+                            <td>1500 TL</td>
+                        </tr>
+                        <tr>
+                            <td>Efsane Paket (VIP)</td>
+                            <td>12 Ay</td>
+                            <td>7/24 Erişim + Kişisel Antrenör + Sınırsız Havuz, Sauna ve Özel Havlu Hizmeti</td>
+                            <td>2000 TL</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="t-tablo-karsilastir-alani" class="t-tablo-kapsayici t-gizli">
+                <table class="t-fiyat-tablosu t-karsilastirma-tablosu">
+                    <thead>
+                        <tr>
+                            <th>Özellikler / Alanlar</th>
+                            <th>Standart</th>
+                            <th>Gold</th>
+                            <th>Premium</th>
+                            <th>VIP (Efsane)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fitness & Kardiyo Alanı</td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Kum Torbaları & Boks Alanı</td>
+                            <td><i class="fa-solid fa-xmark t-ikon-yok"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Havuz & Sauna Katılımı</td>
+                            <td><i class="fa-solid fa-xmark t-ikon-yok"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                        </tr>
+                        <tr>
+                            <td>Kişiye Özel Beslenme Programı</td>
+                            <td><i class="fa-solid fa-xmark t-ikon-yok"></i></td>
+                            <td><i class="fa-solid fa-xmark t-ikon-yok"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                        </tr>
+                        <tr>
+                            <td>7/24 Salon Erişimi & VIP Havlu</td>
+                            <td><i class="fa-solid fa-xmark t-ikon-yok"></i></td>
+                            <td><i class="fa-solid fa-xmark t-ikon-yok"></i></td>
+                            <td><i class="fa-solid fa-xmark t-ikon-yok"></i></td>
+                            <td><i class="fa-solid fa-check t-ikon-var"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <script>
+            function tTabloGoster(tip) {
+                const fiyatAlani = document.getElementById('t-tablo-fiyat-alani');
+                const karsilastirAlani = document.getElementById('t-tablo-karsilastir-alani');
+                const btnFiyat = document.getElementById('btn-fiyat');
+                const btnKarsilastir = document.getElementById('btn-karsilastir');
+
+                if (tip === 'fiyat') {
+                    fiyatAlani.classList.remove('t-gizli');
+                    karsilastirAlani.classList.add('t-gizli');
+                    btnFiyat.classList.add('t-tablo-buton-aktif');
+                    btnKarsilastir.classList.remove('t-tablo-buton-aktif');
+                } else {
+                    fiyatAlani.classList.add('t-gizli');
+                    karsilastirAlani.classList.remove('t-gizli');
+                    btnFiyat.classList.remove('t-tablo-buton-aktif');
+                    btnKarsilastir.classList.add('t-tablo-buton-aktif');
+                }
+            }
+        </script>
+
+        <section class="t-form-bolumu">
+            <h2 class="t-sayfa-baslik">Hemen Ön Kayıt Ol!</h2>
+            <p class="t-sayfa-alt-metin">Formu doldur, eğitmenlerimiz 24 saat içinde seninle iletişime geçsin.</p>
+
+            <form class="t-kayit-formu" id="t-kayitFormu">
+                <div class="t-form-grup">
+                    <label for="t-isim">Adınız Soyadınız:</label>
+                    <input type="text" id="t-isim" name="adSoyad" placeholder="Örn: Tarkan Kara" required>
+                </div>
+
+                <div class="t-form-grup">
+                    <label for="t-telefon">Telefon Numaranız:</label>
+                    <input type="tel" id="t-telefon" name="telefon" placeholder="Örn: 0555 555 5555" required>
+                </div>
+
+                <div class="t-form-grup">
+                    <label for="t-yas">Yaşınız:</label>
+                    <input type="number" id="t-yas" name="yas" placeholder="Örn: 25" required>
+                </div>
+
+                <div class="t-form-grup">
+                    <label for="t-hedef">Ana Hedefiniz Nedir?</label>
+                    <select id="t-hedef" name="hedef" required>
+                        <option value="">Lütfen Bir Hedef Seçiniz</option>
+                        <option value="kilo-verme">Yağ Yakımı & Kilo Verme</option>
+                        <option value="kas-geliştirme">Kas Kütlesi Artırma (Bulking)</option>
+                        <option value="kondisyon">Dövüş Sporları & Kondisyon</option>
+                        <option value="saglik">Sağlıklı Yaşam / Sıkılaşma</option>
+                    </select>
+                </div>
+
+                <div class="t-form-grup">
+                    <label>Tercih Ettiğiniz Üyelik Tipi:</label>
+                    <div class="t-radio-secenekleri">
+                        <label class="t-radio-etiket">
+                            <input type="radio" name="paketTipi" value="Standart" checked>
+                            <span>Standart Paket</span>
+                        </label>
+                        <label class="t-radio-etiket">
+                            <input type="radio" name="paketTipi" value="Gold">
+                            <span>Gold Paket</span>
+                        </label>
+                        <label class="t-radio-etiket">
+                            <input type="radio" name="paketTipi" value="Premium">
+                            <span>Premium Savaşçı</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="t-form-buton">Ön Kaydı Tamamla</button>
+            </form>
+        </section>
+
+    </main>
+
+    <footer class="t-alt-alan">
+        <div class="t-alt-icerik">
+            <p>© 2026 Tarkan Kara - Tüm Hakları Saklıdır. Ödev Projesidir.</p>
+            <div class="t-iletisim-ikonlari">
+                <span><i class="fa-solid fa-phone"></i> +90 555 555 55 55</span>
+                <span><i class="fa-solid fa-envelope"></i> info@karapatifitclub.com</span>
+                <span><i class="fa-solid fa-location-dot"></i> Kozyatağı, Kadıköy / İstanbul</span>   
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

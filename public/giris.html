@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetici Girişi - KaraPati Fit Club</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css"> 
+</head>
+<body>
+
+    <header class="t-ust-alan">
+        <nav class="t-ust-nav-bar">
+            <input type="checkbox" id="t-menu-tetikleyici" class="t-menu-tetikleyici">
+            
+            <label for="t-menu-tetikleyici" class="t-hamburger-butonu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <div class="t-hamburger-menü-kapsayici">
+                <div class="t-logo-kapsayici">
+                    <img src="resimler/logo/logoson.png" alt="KaraPati Fit Club Logo" class="t-salon-logosu">
+                    <span class="t-logo-metin">KaraPati Fit Club</span>
+                </div>
+                <ul class="t-menu-listesi">
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="uyeler.html">Üyeler & Paketler</a></li>
+                    <li><a href="giris.html" class="t-aktif">Yönetici Girişi</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section class="t-tam-ekran-bolum t-bg-giris">
+        <div class="t-giris-kapsayici">
+            
+            <div class="t-form-ust-baslik">
+                <span>KARAPATİ GYM MANAGEMENT</span>
+            </div>
+
+            <div id="t-giris-form-alani">
+                <h3 class="t-kart-baslik">Yönetici Paneli Girişi</h3>
+                <form class="t-kimlik-formu" id="t-girisFormu">
+                    <div class="t-form-grup-ozel">
+                        <label for="t-giris-kullanici">Kullanıcı Adı:</label>
+                        <div class="t-input-ikonlu">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="t-giris-kullanici" name="kullaniciAdi" placeholder="Kullanıcı adınızı girin" required>
+                        </div>
+                    </div>
+                    <div class="t-form-grup-ozel">
+                        <label for="t-giris-sifre">Şifre:</label>
+                        <div class="t-input-ikonlu">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="t-giris-sifre" name="sifre" placeholder="Şifrenizi girin" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="t-buton-turuncu t-genis-buton">Sisteme Giriş Yap</button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="t-alt-alan">
+        <div class="t-alt-icerik">
+            <p>© 2026 Tarkan Kara - Tüm Hakları Saklıdır. Ödev Projesidir.</p>
+            <div class="t-iletisim-ikonlari">
+                <span><i class="fa-solid fa-phone"></i> +90 555 555 55 55</span>
+                <span><i class="fa-solid fa-envelope"></i> info@karapatifitclub.com</span>
+                <span><i class="fa-solid fa-location-dot"></i> Kozyatağı, Kadıköy / İstanbul</span>   
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
