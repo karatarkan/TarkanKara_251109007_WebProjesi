@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim Paneli - KaraPati Fit Club</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">    
+</head>
+<body class="t-sayfa-akici">
+
+    <header style="background-color: #111; border-bottom: 2px solid #ff6600; padding: 15px 30px; position: relative; z-index: 99999;">
+        <nav style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="resimler/logo/logoson.png" alt="Logo" style="height: 40px; width: auto;">
+                <span style="color: #fff; font-weight: bold; font-size: 1.2rem; letter-spacing: 1px;">KARAPATİ ADMİN PANEL</span>
+            </div>
+            <ul style="display: flex; gap: 15px; list-style: none; margin: 0; padding: 0; align-items: center;">
+                <li><button class="t-panel-sekme-buton " data-target="talepler-sekmesi"><i class="fa-solid fa-envelope-open-text"></i> Bilgi Talepleri</button></li>
+                <li><button class="t-panel-sekme-buton active" data-target="uye-yonetim-sekmesi"><i class="fa-solid fa-users-gear"></i> Üye Yönetimi</button></li>
+                <li><button class="t-panel-sekme-buton" data-target="paketler-sekmesi"><i class="fa-solid fa-dumbbell"></i> Paketlerimiz</button></li>
+                <li><a href="/api/251109007/cikis" style="color: #ff4d4d; text-decoration: none; font-weight: bold; padding: 10px 15px; border: 1px solid #ff4d4d; border-radius: 4px; transition: all 0.2s;"><i class="fa-solid fa-power-off"></i> Güvenli Çıkış</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main style="padding: 40px 20px; max-width: 1200px; margin: 0 auto; color: #fff;">
+        
+        <div id="uye-yonetim-sekmesi" class="t-panel-sekme-icerik active">
+            <h1 style="color: #ff6600; margin-bottom: 10px;"><i class="fa-solid fa-gauge"></i> Kulüp Üye Yönetim Paneli</h1>
+            <p style="color: #aaa; margin-bottom: 30px;">Hocam, veritabanındaki (MongoDB Atlas) aktif üyeleri buradan ekleyebilir, silebilir veya güncelleyebilirsiniz.</p>
+
+            <section style="background: #1e1e1e; padding: 25px; border-radius: 8px; border: 1px solid #333; margin-bottom: 40px;">
+                <h2 id="form-baslik" style="color: #ff6600; margin-bottom: 20px;"><i class="fa-solid fa-user-plus"></i> Yeni Üye Kaydet</h2>
+                
+                <form id="panelUyeFormu" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: flex-end;">
+                    <input type="hidden" id="uyeId">
+                    
+                    <div>
+                        <label style="display:block; margin-bottom:5px; color:#ccc;">Adı:</label>
+                        <input type="text" id="uyeAd" required style="width:100%; padding:10px; background:#2d2d2d; border:1px solid #444; color:#fff; border-radius:4px;">
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:5px; color:#ccc;">Soyadı:</label>
+                        <input type="text" id="uyeSoyad" required style="width:100%; padding:10px; background:#2d2d2d; border:1px solid #444; color:#fff; border-radius:4px;">
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:5px; color:#ccc;">Yaşı:</label>
+                        <input type="number" id="uyeYas" required style="width:100%; padding:10px; background:#2d2d2d; border:1px solid #444; color:#fff; border-radius:4px;">
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:5px; color:#ccc;">Seçili Paket:</label>
+                        <select id="uyePaket" required style="width:100%; padding:10px; background:#2d2d2d; border:1px solid #444; color:#fff; border-radius:4px;">
+                            <option value="664b4c730000000000000001">Standart Üyelik (2000 TL)</option>
+                            <option value="664b4c730000000000000002">Gold Üyelik (9000 TL)</option>
+                            <option value="664b4c730000000000000003">Premium Savaşçı (15000 TL)</option>
+                            <option value="664b4c730000000000000004">Efsane Paket (VIP) (30000 TL)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit" id="formButon" class="t-form-buton" style="width:100%; padding:11px; font-weight:bold; cursor:pointer;">Üyeyi Veritabanına Yaz</button>
+                    </div>
+                </form>
+            </section>
+
+            <section style="background: #1e1e1e; padding: 25px; border-radius: 8px; border: 1px solid #333; overflow-x: auto;">
+                <h2 style="color: #ff6600; margin-bottom: 20px;"><i class="fa-solid fa-users"></i> Veritabanındaki Mevcut Üyeler (Canlı MongoDB)</h2>
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background: #2d2d2d; color: #ff6600; border-bottom: 2px solid #444;">
+                            <th style="padding: 12px;">Müşteri Adı Soyadı</th>
+                            <th style="padding: 12px;">Yaş</th>
+                            <th style="padding: 12px;">Kulüp Paketi</th>
+                            <th style="padding: 12px; text-align: center;">Yönetimsel İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="uyeTabloGövde"></tbody>
+                </table>
+            </section>
+        </div>
+
+        <div id="paketler-sekmesi" class="t-panel-sekme-icerik">
+            <h1 style="color: #ff6600; margin-bottom: 10px;"><i class="fa-solid fa-dumbbell"></i> Kulüp Üyelik Paketleri</h1>
+            <p style="color: #aaa; margin-bottom: 30px;">Hocam, admin panelinden çıkış yapmadan salonumuzun aktif fiyat tarifelerini buradan anlık inceleyebilirsiniz.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                <div style="background: #1e1e1e; padding: 30px; border-radius: 8px; border: 1px solid #333; text-align: center;">
+                    <h3 style="color: #ff6600; font-size: 1.5rem; margin-bottom: 15px;">Standart Paket</h3>
+                    <p style="font-size: 2rem; font-weight: bold; margin-bottom: 15px; color: #fff;">2000</p> TL <span style="font-size: 1rem; color: #aaa;">/ Aylık</span></p>
+                    <ul style="list-style: none; padding: 0; margin: 0 0 20px 0; color: #ccc; text-align: left; line-height: 2;">
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> Haftada 3 Gün Giriş Hakkı</li>
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> Standart Fitness Alanı</li>
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> Soyunma Odası & Duş</li>
+                    </ul>
+                </div>
+                <div style="background: #1e1e1e; padding: 30px; border-radius: 8px; border: 2px solid #ff6600; text-align: center; position: relative;">
+                    <span style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #ff6600; color: #fff; padding: 2px 15px; font-size: 0.8rem; font-weight: bold; border-radius: 20px;">EN ÇOK SEÇİLEN</span>
+                    <h3 style="color: #ff6600; font-size: 1.5rem; margin-bottom: 15px;">Gold Paket</h3>
+                    <p style="font-size: 2rem; font-weight: bold; margin-bottom: 15px; color: #fff;">9000 TL <span style="font-size: 1rem; color: #aaa;">/ Aylık</span></p>
+                    <ul style="list-style: none; padding: 0; margin: 0 0 20px 0; color: #ccc; text-align: left; line-height: 2;">
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> Haftada 5 Gün Giriş Hakkı</li>
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> Havuz & Sauna Kullanımı</li>
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> 1 Seans Havuz Analizi</li>
+                    </ul>
+                </div>
+                <div style="background: #1e1e1e; padding: 30px; border-radius: 8px; border: 1px solid #333; text-align: center;">
+                    <h3 style="color: #ff6600; font-size: 1.5rem; margin-bottom: 15px;">Premium Savaşçı</h3>
+                    <p style="font-size: 2rem; font-weight: bold; margin-bottom: 15px; color: #fff;">20000 TL <span style="font-size: 1rem; color: #aaa;">/ Aylık</span></p>
+                    <ul style="list-style: none; padding: 0; margin: 0 0 20px 0; color: #ccc; text-align: left; line-height: 2;">
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> Sınırsız (7 Gün) Giriş Hakkı</li>
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> Özel CrossFit Alanı</li>
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> Havuz, Sauna & Tüm Grup Dersleri</li>
+                    </ul>
+                </div>
+                <div style="background: #1e1e1e; padding: 30px; border-radius: 8px; border: 1px solid #ff6600; text-align: center; box-shadow: 0 0 15px rgba(255, 102, 0, 0.2);">
+                    <h3 style="color: #ff6600; font-size: 1.5rem; margin-bottom: 15px;">Efsane Paket (VIP)</h3>
+                    <p style="font-size: 2rem; font-weight: bold; margin-bottom: 15px; color: #fff;">30000 TL <span style="font-size: 1rem; color: #aaa;">/ Aylık</span></p>
+                    <ul style="list-style: none; padding: 0; margin: 0 0 20px 0; color: #ccc; text-align: left; line-height: 2;">
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> 7/24 Sınırsız Giriş & VIP Alan</li>
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> Haftada 2 Seans Özel Trainer (PT)</li>
+                        <li><i class="fa-solid fa-check" style="color:#ff6600;"></i> Havuz, Sauna, Masaj & Tüm İkramlar</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="talepler-sekmesi" class="t-panel-sekme-icerik">
+            <h1 style="color: #ff6600; margin-bottom: 10px;"><i class="fa-solid fa-phone-volume"></i> Gelen Bilgi & Çağrı Talepleri</h1>
+            <p style="color: #aaa; margin-bottom: 30px;">Hocam, web sitesindeki ön kayıt formunu dolduran kişilerin listesi buraya düşer. Resmi üye değildirler, arayıp bilgi verebilirsiniz.</p>
+
+            <section style="background: #1e1e1e; padding: 25px; border-radius: 8px; border: 1px solid #333; overflow-x: auto;">
+                <table class="t-panel-tablo" style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background: #2d2d2d; color: #ff6600; border-bottom: 2px solid #444;">
+                            <th style="padding: 12px;">Talep Eden Adı Soyadı</th>
+                            <th style="padding: 12px;">İletişim Telefonu</th>
+                            <th style="padding: 12px;">Yaş</th>
+                            <th style="padding: 12px;">İlgilendiği Paket</th>
+                        </tr>
+                    </thead>
+                    <tbody id="talepTabloGövde">
+                        </tbody>
+                </table>
+            </section>
+        </div>
+
+    </main>
+
+    <script src="js/panel.js"></script>
+</body>
+</html>

@@ -1,18 +1,73 @@
 const express = require('express'); // Express framework'ünü dahil ediyorum
 const router = express.Router(); // Express Router'ını kullanarak yeni bir router oluşturuyorum
 const Uye = require('../models/Uye'); // Uye modelini dahil ediyorum
+const Kullanici = require('../models/Kullanici');// Yetkili kontrolü için Kullanici modelini dahil ediyorum
+const OnKayit = require('../models/OnKayit'); 
+// ==========================================================================
+// HOCAM GÜVENLİK VE OTURUM KONTROLÜ (MIDDLEWARE) BURADADIR
+// Giriş yapmamış kişilerin API endpoint'lerine erişmesini engelleyen tünel
+// ==========================================================================
+const yetkiKontrol = (req, res, next) => {
+    if (req.session && req.session.yoneticiId) {
+        return next(); // Oturum açık, bir sonraki işleme geçebilirsin hocam
+    } else {
+        return res.status(401).json({ mesaj: "Hocam yetkisiz erişim engellendi! Lütfen önce giriş yapın." });
+    }
+};
+
+// ==========================================================================
+// --- YÖNETİCİ KİMLİK DOĞRULAMA (LOGIN & LOGOUT) ROTALARI ---
+// ==========================================================================
+
+// Hocam, yetkili giriş formundan gelen istekleri doğrudan işleyen ve yönlendiren POST endpoint'i
+router.post('/api/251109007/giris', async (req, res) => {
+    try {
+        const { kullaniciAdi, sifre } = req.body;
+        
+        // Kullanıcıyı adına göre veritabanında arıyoruz
+        const yonetici = await Kullanici.findOne({ kullaniciAdi });
+        if (!yonetici) {
+            return res.send('<script>alert("Hatalı kullanıcı adı veya şifre!"); window.location.href="/giris.html";</script>');
+        }
+
+        // Modelin içine yazdığımız SHA-256 şifre kontrol metodunu çağırıyoruz
+        const sifreDogruMu = yonetici.sifreKontrol(sifre);
+        if (!sifreDogruMu) {
+            return res.send('<script>alert("Hatalı kullanıcı adı veya şifre!"); window.location.href="/giris.html";</script>');
+        }
+
+        // Giriş başarılıysa session (oturum) kaydını yapıyoruz
+        req.session.yoneticiId = yonetici._id;
+        req.session.kullaniciAdi = yonetici.kullaniciAdi;
+
+        // Hocam ekrana ham veri basmak yerine, tarayıcıyı doğrudan üyeler yönetim paneline uçuruyoruz
+        return res.redirect('/panel.html');
+    } catch (error) {
+        res.status(500).send("Giriş işlemi esnasında bir hata oluştu");
+    }
+});
+
+// Oturumu sunucuyu çökertmeden güvenli bir şekilde sonlandıran ve giriş sayfasına uçuran GÜNCEL ÇIKIŞ endpoint'i
+router.get('/api/251109007/cikis', (req, res) => {
+    // 1. Adım: Sunucu tarafındaki oturum verilerini temizliyoruz
+    req.session.yoneticiId = null;
+    req.session.kullaniciAdi = null;
+
+    // 2. Adım: Oturumu tamamen imha ediyoruz
+    req.session.destroy((hata) => {
+        // Hata olsa bile tarayıcının çerezini temizleyip giriş sayfasına güvenli bir şekilde fırlatıyoruz
+        res.clearCookie('connect.sid'); // Express'in varsayılan oturum çerezini tarayıcıdan siliyoruz hocam
+        return res.redirect('/giris.html');
+    });
+});
+
+
+// ==========================================================================
+// --- CRUD ENDPOINT'LERİ (YETKİ KONTROLÜ DUVARI EKLENDİ) ---
+// ==========================================================================
 
 // ---1. ENDPOINT : GET ( TÜM ÜYELERİ LİSTELEME ) ---
-// Asenkron bir fonksiyon kullanarak tüm üyeleri veritabanından çekiyorum,
-// req isteği, res cevabı temsil eder. Hata durumunda 500 durum kodu ve hata mesajı döndürüyorum.
-// await ifadesi, Uye.find() metodunun tamamlanmasını bekler ve sonuçları 'uyeler' değişkenine atar.
-// paket bilgilerini de dahil ederek JSON formatında döndürüyorum.
-// populate() metodu, 'paketId' alanındaki referansları gerçek paket verileriyle doldurur.
-// res.json(uyeler) ifadesi, üyeleri JSON formatında istemciye gönderir.
-// try-catch bloğu, veritabanı işlemi sırasında oluşabilecek hataları yakalamak
-// ve uygun bir hata mesajı döndürmek için kullanılır.
-
-router.get('/api/251109007/uyeler', async (req, res) => {
+router.get('/api/251109007/uyeler', yetkiKontrol, async (req, res) => {
     try {
         const uyeler = await Uye.find().populate('paketId');
         res.json(uyeler);
@@ -21,31 +76,36 @@ router.get('/api/251109007/uyeler', async (req, res) => {
     }
 });
 
-//  ---2. ENFPOINT: POST (YENİ ÜYE EKLEME) ---
-// büyük bir veri gönderimi yaptıgımızda, bu veriyi req.body üzerinden alırız. Yeni bir Uye nesnesi oluşturup, bu nesneyi veritabanına kaydediyorum.
-// req.body.ad, req.body.soyad, req.body.yas ve req.body.paketId ile gelen verileri kullanarak yeni bir üye oluşturuyorum.
-// await yeniUye.save() ifadesi, yeni üyenin veritabanına kaydedilmesini sağlar ve kaydedilen üye bilgilerini 'kaydedilenUye' değişkenine atar.
-// res.status(201).json(kaydedilenUye) ifadesi, başarılı bir şekilde oluşturulan üyeyi JSON formatında istemciye gönderir ve HTTP durum kodunu 201 olarak ayarlar.
-// try-catch bloğu, veritabanı işlemi sırasında oluşabilecek hataları yakalamak ve uygun bir hata mesajı döndürmek için kullanılır.
-
-router.post('/api/251109007/uyeler', async (req, res) => {
-    try{
-        const yeniUye = new Uye({
+//  ---2. ENDPOINT: POST (YENİ ÜYE EKLEME) ---
+// Güvenlik Duvarı: Bu endpoint dışarıya açıktır ama sadece OnKayit tablosuna yazar, asıl üyeleri bozamaz!
+router.post('/api/251109007/onkayit', async (req, res) => {
+    try {
+        const yeniTalep = new OnKayit({
             ad: req.body.ad,
             soyad: req.body.soyad,
             yas: req.body.yas,
+            telefon: req.body.telefon,
             paketId: req.body.paketId
         });
-        const kaydedilenUye = await yeniUye.save();
-        res.status(201).json(kaydedilenUye);
+        const kaydedilenTalep = await yeniTalep.save();
+        res.status(201).json(kaydedilenTalep);
     } catch (error) {
-        res.status(400).json({ mesaj: "Üye eklenemedi" });
+        res.status(400).json({ mesaj: "Ön kayıt talebi alınamadı." });
+    }
+});
+// --- YENİ BİR ENDPOINT: ADMİNİN PANELDE ÖN KAYITLARI GÖRMESİ İÇİN (GET) ---
+// Yetki Kontrolü: Sadece giriş yapmış admin bu bilgi alma taleplerini listeleyebilir!
+router.get('/api/251109007/onkayitlar', yetkiKontrol, async (req, res) => {
+    try {
+        const talepler = await OnKayit.find().populate('paketId');
+        res.json(talepler);
+    } catch (error) {
+        res.status(500).json({ mesaj: "Talepler listelenemedi." });
     }
 });
 
 // ---3. ENDPOINT: PUT (ÜYE GÜNCELLEME) ---
-
-router.put('/api/251109007/uyeler/:id', async (req, res) => {
+router.put('/api/251109007/uyeler/:id', yetkiKontrol, async (req, res) => {
     try {
         const guncellenenUye = await Uye.findByIdAndUpdate(req.params.id, {
             ad: req.body.ad,
@@ -63,9 +123,7 @@ router.put('/api/251109007/uyeler/:id', async (req, res) => {
 });
 
 // ---4. ENDPOINT: DELETE (ÜYE SİLME) ---
-// burda body almadık çünkü silme işlemi için sadece üyenin id'sine ihtiyacımız var. 
-// req.params.id ifadesi, URL'deki :id parametresini temsil eder ve silinecek üyenin id'sini alır.
-router.delete('/api/251109007/uyeler/:id', async (req, res) => {
+router.delete('/api/251109007/uyeler/:id', yetkiKontrol, async (req, res) => {
     try {
         await Uye.findByIdAndDelete(req.params.id);
         res.json({ mesaj: "Üye silindi" });
@@ -73,4 +131,5 @@ router.delete('/api/251109007/uyeler/:id', async (req, res) => {
         res.status(500).json({ mesaj: "Üye silinemedi" });
     }
 });
-module.exports = router; // router'ı diğer dosyalarda kullanmak üzere dışa aktarıyorum
+
+module.exports = router;
