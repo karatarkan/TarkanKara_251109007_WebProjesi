@@ -8,7 +8,7 @@ const kullaniciSchema = new mongoose.Schema({
     collection: '251109007_kullanicilar'
 });
 
-// --- HOCAM YÖNERGEDE İSTEDİĞİNİZ ŞİFRELEME (HASH) İŞLEMİ TAM BURADADIR ---
+// --- YÖNERGEDE İSTEDİĞİNİZ ŞİFRELEME (HASH) İŞLEMİ TAM BURADADIR ---
 // Veritabanına kaydedilmeden hemen önce şifreyi SHA-256 ile şifreliyoruz
 kullaniciSchema.pre('save', function(next) {
     const kullanici = this;

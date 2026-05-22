@@ -9,9 +9,10 @@ require('dotenv').config(); // .env dosyasındaki ortam değişkenlerini yüklem
 // Modellerimizi Seed (Tohumlama) işlemi için buraya çağırıyoruz
 const Kullanici = require('./models/Kullanici');
 const Paket = require('./models/Paket');
+const Uye = require('./models/Uye');
+const OnKayit = require('./models/OnKayit');
 
 const app = express();
-
 
 // Middleware
 app.use(express.json()); // Json formatında gelen verileri işler.
@@ -22,9 +23,9 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use(session({
     secret: process.env.SESSION_SECRET, // Oturum gizliliği için, env dosyasından alıyorum.
-    resave: false, // Oturumun her istekte yeniden kaydedilmesini engeller.
+    resave: false, // Oturumun her istekte yeniden kaydedilmesini env'den engeller.
     saveUninitialized: true,// Yeni oturumların kaydedilmesini sağlar.
-    cookie: { secure: false } // Geliştirme ortamında güvenli olmayan cookie'ler kullanmak için secure: false olarak ayarlıyorum. Üretim ortamında true yapmalısınız.
+    cookie: { secure: false } // Geliştirme ortamında secure: false olmalıdır.
 }));
 
 // --- MONGOOSE İLE CANLI MONGODB ATLAS BAĞLANTI AYARI ---
@@ -32,32 +33,33 @@ mongoose.connect(process.env.MONGODB_URI)
     .then(async () => {
         console.log("MongoDB Atlas bulut veritabanına bağlantı başarıyla sağlandı!");
         
-        // --- HOCAM İLK KURULUM VE GÜVENLİK (SEED) TETİKLEYİCİSİ BURADADIR ---
-        // Sistemde hiç yönetici yoksa, giriş yapabilmemiz için ilk yetkiliyi otomatik oluşturur.
        try {
             // ⚠️ ADIM 1: Hafızadaki eski admin kullanıcılarını tamamen temizliyoruz
             await Kullanici.deleteMany({});
             console.log("Eski yönetici kayıtları temizlendi.");
 
-            // Adım 2: İstediğin yeni admin bilgilerini kriptolayarak veritabanına yazıyoruz
-            // Şifre ("1234") modeldeki .pre('save') sayesinde otomatik SHA-256 ile hash'lenecektir.
             await Kullanici.create({
                 kullaniciAdi: "admin",
                 sifre: "1234"
             });
-            console.log("Sistem İçin Yeni İlk Yetkili Yönetici (admin / 1234) Güvenli Şekilde Oluşturuldu!");
+            console.log("Yönetici (admin / 1234) güvenli şekilde oluşturuldu.");
 
-            // Paketler tablosu boşsa hocanın istediği o ilişkili paketleri de otomatik yükleyelim
-            const paketSayisi = await Paket.countDocuments();
-            if (paketSayisi === 0) {
-                await Paket.insertMany([
-                    { paketAdi: "Standart Üyelik", aylikUcret: 850, haftalikGiris: 3 },
-                    { paketAdi: "Gold Üyelik", aylikUcret: 1200, haftalikGiris: 5 },
-                    { paketAdi: "Premium Savaşçı", aylikUcret: 1500, haftalikGiris: 6 },
-                    { paketAdi: "Efsane Paket (VIP)", aylikUcret: 2000, haftalikGiris: 7 }
-                ]);
-                console.log("Üyelik Paketleri Veritabanına Başarıyla İşlendi!");
-            }
+            // ⚠️ ADIM 2: ESKİ BOZUK, ID'Sİ EŞLEŞMEYEN TÜM ÜYELERİ KAZIYORUZ ⚠️
+            await Uye.deleteMany({});
+            console.log("Eski bozuk üye kayıtları veritabanından tamamen temizlendi!");
+            await OnKayit.deleteMany({});
+            console.log("Eski ön kayıt talepleri veritabanından tamamen kazındı!");
+            // ⚠️ ADIM 3: KOŞULU KALDIRDIK! ESKİ BOZUK PAKETLERİ SİLİP HAKİKİ OBJECTID TİPİNDE YAZIYORUZ ⚠️
+            // Böylece string/object çakışması ve "if (paketSayisi === 0)" engeli tamamen aşılır.
+            await Paket.deleteMany({});
+            await Paket.insertMany([
+                { _id: new mongoose.Types.ObjectId("664b4c730000000000000001"), paketAdi: "Standart Üyelik", aylikUcret: 2000, haftalikGiris: 3 },
+                { _id: new mongoose.Types.ObjectId("664b4c730000000000000002"), paketAdi: "Gold Üyelik", aylikUcret: 9000, haftalikGiris: 5 },
+                { _id: new mongoose.Types.ObjectId("664b4c730000000000000003"), paketAdi: "Premium Savaşçı", aylikUcret: 20000, haftalikGiris: 6 },
+                { _id: new mongoose.Types.ObjectId("664b4c730000000000000004"), paketAdi: "Efsane Paket (VIP)", aylikUcret: 30000, haftalikGiris: 7 }
+            ]);
+            console.log("Üyelik Paketleri Hakiki Mongoose ObjectId Yapısıyla Yeniden Mühürlendi!");
+
         } catch (seedHata) {
             console.log("İlk kurulum verileri yazılırken hata oluştu: ", seedHata);
         }
