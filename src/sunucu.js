@@ -5,8 +5,6 @@ const mongoose = require('mongoose');
 const session = require('express-session'); // Kullanici oturum yönetimi için gerekli.
 const path = require('path'); // Dosya ve dizin yollarını yönetmek için path modülünü kullanıyorum.
 require('dotenv').config(); // .env dosyasındaki ortam değişkenlerini yüklemek için dotenv paketini kullanıyorum
-
-// Modellerimizi Seed (Tohumlama) işlemi için buraya çağırıyoruz
 const Kullanici = require('./models/Kullanici');
 const Paket = require('./models/Paket');
 const Uye = require('./models/Uye');
@@ -34,7 +32,7 @@ mongoose.connect(process.env.MONGODB_URI)
         console.log("MongoDB Atlas bulut veritabanına bağlantı başarıyla sağlandı!");
         
        try {
-            // ⚠️ ADIM 1: Hafızadaki eski admin kullanıcılarını tamamen temizliyoruz
+            // ADIM 1: Hafızadaki eski admin kullanıcılarını tamamen temizliyoruz
             await Kullanici.deleteMany({});
             console.log("Eski yönetici kayıtları temizlendi.");
 
@@ -44,12 +42,12 @@ mongoose.connect(process.env.MONGODB_URI)
             });
             console.log("Yönetici (admin / 1234) güvenli şekilde oluşturuldu.");
 
-            // ⚠️ ADIM 2: ESKİ BOZUK, ID'Sİ EŞLEŞMEYEN TÜM ÜYELERİ TEMİZLİYORUZ ⚠️
+            // ADIM 2: ESKİ BOZUK, ID'Sİ EŞLEŞMEYEN TÜM ÜYELERİ TEMİZLİYORUZ 
             await Uye.deleteMany({});
             console.log("Eski bozuk üye kayıtları veritabanından tamamen temizlendi!");
             await OnKayit.deleteMany({});
             console.log("Eski ön kayıt talepleri veritabanından temizlendi!");
-            // ⚠️ ADIM 3: KOŞULU KALDIRDIK! ESKİ BOZUK PAKETLERİ SİLİP HAKİKİ OBJECTID TİPİNDE YAZIYORUZ ⚠️
+            // ADIM 3: KOŞULU KALDIRDIK! ESKİ BOZUK PAKETLERİ SİLİP HAKİKİ OBJECTID TİPİNDE YAZIYORUZ 
             // Böylece string/object çakışması tamamen aşılır.
             await Paket.deleteMany({});
             await Paket.insertMany([

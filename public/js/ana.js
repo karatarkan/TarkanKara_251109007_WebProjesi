@@ -2,6 +2,7 @@
  * ==========================================================================
  * FRONTEND - BACKEND BAĞLANTI KÖPRÜSÜ (ana.js) BURASIDIR.
  * Ön Kayıt veri akışını garanti altına alan kırılmaz sürüm.
+ * Ön kayıt formu submit edildiğinde, veriler MongoDB Atlas havuzuna iletilir.
  * ==========================================================================
  */
 

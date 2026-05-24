@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const crypto = require('crypto');
+const crypto = require('crypto'); // Node.js'in dahili kriptografi modülünü kullanarak şifreleme işlemi yapacağız
 
 const kullaniciSchema = new mongoose.Schema({
     kullaniciAdi: {type: String, required: true, unique: true},
@@ -17,7 +17,7 @@ kullaniciSchema.pre('save', function(next) {
     if (!kullanici.isModified('sifre')) return;
 
     try {
-        const hash = crypto.createHash('sha256').update(kullanici.sifre).digest('hex');
+        const hash = crypto.createHash('sha256').update(kullanici.sifre).digest('hex'); // SHA-256 algoritmasıyla şifreyi hash'liyoruz
         kullanici.sifre = hash;
         
     } catch (hata) {

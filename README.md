@@ -29,7 +29,7 @@ Bu proje, bir spor salonunun aktif üye yönetimini ve web sitesi üzerinden gel
  ┃ ┃ ┣ 📜 ana.js           # Ziyaretçi ön kayıt form motoru ve veri paketleme
  ┃ ┃ ┗ 📜 panel.js         # Admin paneli sekme geçişleri ve canlı CRUD motoru
  ┃ ┣ 📜 index.html         # Spor salonu ana açılış sayfası
- ┃ ┣ 📜 uyeler.html        # Paket fiyatları, karşılaştırma tablosu ve ön kayıt formu
+ ┃ ┣ 📜 paketler.html        # Paket fiyatları, karşılaştırma tablosu ve ön kayıt formu
  ┃ ┣ 📜 giris.html         # Yönetici güvenli kimlik doğrulama arayüzü
  ┃ ┗ 📜 panel.html         # Gerçek zamanlı Üye ve Bilgi Talebi Yönetim Merkezi
  ┣ 📂 src                  # Arka Yüz (Backend) Katmanı

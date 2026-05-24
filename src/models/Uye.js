@@ -11,7 +11,7 @@ const UyeSchema = new mongoose.Schema({
     kayitTarihi: { type: Date, default: Date.now },
     uyelikBitisTarihi: { 
         type: Date, 
-        default: () => new Date(+new Date() + 30 * 24 * 60 * 60 * 1000)
+        default: () => new Date(+new Date() + 30 * 24 * 60 * 60 * 1000) // Varsayılan olarak üyelik bitiş tarihi, kayıt tarihinden 30 gün sonrasına ayarlanır.
     }
 }, {
     collection: '251109007_uyeler'

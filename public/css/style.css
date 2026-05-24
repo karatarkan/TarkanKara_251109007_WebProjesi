@@ -299,7 +299,7 @@ html, body {
 .t-iletisim-ikonlari i { color: #FF4500; }
 
 /* ==========================================================================
-   5. BÖLÜM: ÜYELER & PAKETLER SAYFASI TASARIMLARI
+   5. PAKETLER SAYFASI TASARIMLARI
    ========================================================================== */
 .t-sayfa-akici {
     overflow-y: auto !important;
@@ -394,7 +394,7 @@ html, body {
 .t-ikon-yok { color: #e74c3c; }
 
 /* ==========================================================================
-   6. BÖLÜM: ÖN KAYIT VE GİRİŞ FORMLARI TASARIMLARI
+   6. BÖLÜM: ÖN KAYIT FORMU TASARIMLARI
    ========================================================================== */
 .t-form-bolumu {
     background-color: #222;

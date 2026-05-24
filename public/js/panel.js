@@ -1,13 +1,13 @@
 /**
  * ==========================================================================
  * SELAMLAR, ADMİN PANELİ TÜM CRUD İŞLEMLERİ (panel.js) BURADADIR.
- * Sekme geçişlerindeki anlık veri yenileme motoru başarıyla entegre edildi!
  * ==========================================================================
  */
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- GÜVENLİK PROTOKOLÜ: SAYFA YENİLENİRSE GİRİŞE AT ---
     const sayfaYenilendiMi = window.performance && window.performance.getEntriesByType("navigation")[0].type === "reload";
+    // Eğer sayfa yenilendiyse, güvenlik protokolü devreye girecek ve kullanıcıyı çıkışa atacak
     if (sayfaYenilendiMi) {
         fetch('/api/251109007/cikis').then(() => {
             alert("Güvenlik Protokolü: Sayfa yenilendiği için oturumunuz sonlandırıldı!");
@@ -16,46 +16,49 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const tabloGövde = document.getElementById('uyeTabloGövde');
-    const uyeFormu = document.getElementById('panelUyeFormu');
-    const formBaslik = document.getElementById('form-baslik');
-    const formButon = document.getElementById('formButon');
+    const tabloGövde = document.getElementById('uyeTabloGövde'); // Üye yönetimi tablosunun gövdesi
+    const uyeFormu = document.getElementById('panelUyeFormu'); // Üye ekleme/güncelleme formu
+    const formBaslik = document.getElementById('form-baslik'); // Formun başlık elementini sabitliyoruz
+    const formButon = document.getElementById('formButon'); // Formun submit butonunu sabitliyoruz
     
     // Form Elemanları Sabitlemesi
-    const uyeIdInput = document.getElementById('uyeId');
-    const uyeAdInput = document.getElementById('uyeAd');
-    const uyeSoyadInput = document.getElementById('uyeSoyad');
-    const uyeYasInput = document.getElementById('uyeYas');
-    const uyeTelefonInput = document.getElementById('uyeTelefon');
-    const uyePaketSelect = document.getElementById('uyePaketId'); 
-    const uyeDurumSelect = document.getElementById('uyeDurum');
-    const uyeOdemeSelect = document.getElementById('uyeOdemeYontemi');
+    const uyeIdInput = document.getElementById('uyeId'); // Gizli input, düzenleme modunda hangi üyenin güncelleneceğini tutacak
+    const uyeAdInput = document.getElementById('uyeAd'); // Üye adı input'u
+    const uyeSoyadInput = document.getElementById('uyeSoyad'); // Üye soyadı input'u
+    const uyeYasInput = document.getElementById('uyeYas'); // Üye yaşı input'u
+    const uyeTelefonInput = document.getElementById('uyeTelefon'); // Üye telefon input'u
+    const uyePaketSelect = document.getElementById('uyePaketId'); // Üye paketi select elementi
+    const uyeDurumSelect = document.getElementById('uyeDurum'); // Üye durumu (Aktif/Pasif) select elementi
+    const uyeOdemeSelect = document.getElementById('uyeOdemeYontemi'); // Üye ödeme yöntemi select elementi
 
-    let globalUyelerListesi = [];
+    let globalUyelerListesi = []; // Tüm üyelerin güncel listesini tutacak global değişken
 
     // --- 1. CRUD İŞLEMİ: GET (CANLI ÜYELERİ LİSTELEME) ---
     async function uyeleriGetir() {
         try {
-            const cevap = await fetch('/api/251109007/uyeler');
+            const cevap = await fetch('/api/251109007/uyeler'); //await ile asenkron veri çekme
+            // 401 Unauthorized hatası kontrolü: Eğer kullanıcı yetkisizse, çıkışa at ve uyarı göster
             if (cevap.status === 401) {
                 alert("Oturum süreniz dolmuş! Lütfen tekrar giriş yapın.");
                 window.location.href = '/giris.html';
                 return;
             }
-            const uyeler = await cevap.json();
+            const uyeler = await cevap.json(); // json formatında gelen veriyi JavaScript objesine çevirme
             globalUyelerListesi = uyeler; 
             
-            if (!tabloGövde) return;
-            tabloGövde.innerHTML = ''; 
+            if (!tabloGövde) return; 
+            tabloGövde.innerHTML = ''; // '' ile tabloyu tamamen temizliyoruz, böylece eski veriler kalmaz 
 
             if (!uyeler || uyeler.length === 0) {
                 tabloGövde.innerHTML = `<tr><td colspan="7" style="padding:15px; text-align:center; color:#aaa;">Veritabanında henüz kayıtlı üye yok.</td></tr>`;
                 return;
-            }
+            } // Eğer üyeler varsa, her bir üyeyi tabloya ekleyelim
 
             uyeler.forEach(uye => {
                 let paketIsmi = 'Tanımsız Paket';
 
+                // Öncelikli olarak garantiPaketAdi alanını kontrol ediyoruz, çünkü bu alan varsa kesinlikle daha doğru bilgi verir
+                // GarantiPaketAdi yoksa, paketId içindeki paketAdi'ye bakıyoruz. O da yoksa, yine paketId'nin kendisine bakarak tahmin yapmaya çalışacağız
                 if (uye.garantiPaketAdi) {
                     paketIsmi = uye.garantiPaketAdi;
                 } else if (uye.paketId && uye.paketId.paketAdi) {
@@ -64,8 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pId = typeof uye.paketId === 'object' ? (uye.paketId._id ? uye.paketId._id.toString() : '') : uye.paketId.toString();
                     const temizId = pId.trim().toLowerCase();
                     
-                    if (temizId === "664b4c730000000000000001") paketIsmi = "Standart Üyelik";
-                    else if (temizId === "664b4c730000000000000002") paketIsmi = "Gold Üyelik";
+                    if (temizId === "664b4c730000000000000001") paketIsmi = "Standart Üyelik"; // Bu ID'ler MongoDB Atlas'taki paket koleksiyonundaki gerçek ID'lerdir, bu yüzden kesin eşleşme yapıyoruz
+                    else if (temizId === "664b4c730000000000000002") paketIsmi = "Gold Üyelik"; 
                     else if (temizId === "664b4c730000000000000003") paketIsmi = "Premium Savaşçı";
                     else if (temizId === "664b4c730000000000000004") paketIsmi = "Efsane Paket (VIP)";
                 }
@@ -88,11 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="t-btn-sil-yeni" data-id="${uye._id}" style="padding:5px 10px; background:#dc3545; color:#fff; border:none; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 `;
-                tabloGövde.appendChild(tr);
+                tabloGövde.appendChild(tr); // Oluşturduğumuz tablo satırını tablo gövdesine ekliyoruz
             });
 
-            silmeOlaylariniTetikle();
-            duzenlemeOlaylariniTetikle();
+            silmeOlaylariniTetikle(); // Silme butonlarına tıklama olaylarını tetikliyoruz, çünkü her yenilemede yeni butonlar oluşuyor
+            duzenlemeOlaylariniTetikle(); // Düzenleme butonlarına tıklama olaylarını tetikliyoruz, çünkü her yenilemede yeni butonlar oluşuyor
 
         } catch (hata) {
             console.error("Üyeler çekilirken hata oluştu:", hata);
@@ -102,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 2. CRUD İŞLEMİ: POST & PUT (VERİTABANINA KAYDETME MOTORU) ---
     if (uyeFormu) {
         uyeFormu.addEventListener('submit', async (e) => {
-            e.preventDefault(); 
+            e.preventDefault(); // Sayfa yenilenmesini kesin olarak engelle!
 
             const id = uyeIdInput.value;
             const veri = {
@@ -117,13 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 let url = '/api/251109007/uyeler';
-                let method = 'POST';
+                let method = 'POST'; // Varsayılan olarak yeni üye ekleme (POST) işlemi yapılacak
 
                 if (id) {
                     url = `/api/251109007/uyeler/${id}`;
-                    method = 'PUT';
+                    method = 'PUT'; // Eğer id varsa, bu bir güncelleme işlemi olduğu için HTTP methodunu PUT yapıyoruz
                 }
-
+                // fetch API kullanarak veriyi backend'e gönderiyoruz, method ve url dinamik olarak belirleniyor
                 const cevap = await fetch(url, {
                     method: method,
                     headers: { 'Content-Type': 'application/json' },
@@ -206,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- SEKME (TAB) GEÇİŞ KODLARI (DİNAMİK YENİLEME EKLENDİ) ---
+    // --- SEKME (TAB) GEÇİŞ KODLARI ---
     const sekmeButonlari = document.querySelectorAll('.t-panel-sekme-buton, .t-panel-sekme-buton.active');
     const sekmeIcerikleri = document.querySelectorAll('.t-panel-sekme-icerik');
 
@@ -224,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // ⚠️ BURASI AKIŞI KURTARAN YER: Sekme Bilgi Talepleri ise anlık listeyi tazele!
+            // Sekme geçişi sonrası ilgili verileri güncelleyelim, böylece her sekmeye geçildiğinde en güncel bilgiler gösterilir
             if (hedefSekmeId === 'talepler-sekmesi') {
                 talepleriGetir();
             } else if (hedefSekmeId === 'uye-yonetim-sekmesi') {
@@ -239,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function talepleriGetir() {
         try {
             const cevap = await fetch('/api/251109007/onkayitlar');
-            if (!cevap.ok) return;
+            if (!cevap.ok) return; 
             const talepler = await cevap.json();
             
             if(!talepTabloGövde) return;
