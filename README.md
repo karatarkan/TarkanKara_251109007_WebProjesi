@@ -51,3 +51,5 @@ Bu proje, bir spor salonunun aktif üye yönetimini ve web sitesi üzerinden gel
 Varsayilan Kullanici Adı ve Şifre: admin // 1234   
 
 http://localhost:3000 ile denemeyi yapin.
+
+Youtube: https://youtu.be/YiulkcD7znM
