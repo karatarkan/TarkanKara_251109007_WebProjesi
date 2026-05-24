@@ -45,7 +45,7 @@ Bu proje, bir spor salonunun aktif üye yönetimini ve web sitesi üzerinden gel
  ┣ 📜 .env.example         # Kurulum için maskelenmiş şablon ortam değişkenleri kılavuzu
  ┗ 📜 package.json         # Proje bağımlılıkları ve npm scriptleri
 
- **ÖNEMLİ NOT: .env.example dosyasının adını .env yapınız ve içerisindeki KULLANICI_ADI:SIFRE kismini kendinize göre degistirin. Bağımlılıkları yükledikten sonra; 
+ **ÖNEMLİ NOT: .env.example dosyasının adını .env yapınız ve içerisindeki KULLANICI_ADI:SIFRE kismini kendinize göre degistirin (KULLANICI_ADI:SIFRE = mongoDB UserID ve sifreniz). Bağımlılıkları yükledikten sonra; 
     node src/sunucu.js sunucuyu başlatınız.
 
 Varsayilan Kullanici Adı ve Şifre: admin // 1234   

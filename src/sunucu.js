@@ -44,13 +44,13 @@ mongoose.connect(process.env.MONGODB_URI)
             });
             console.log("Yönetici (admin / 1234) güvenli şekilde oluşturuldu.");
 
-            // ⚠️ ADIM 2: ESKİ BOZUK, ID'Sİ EŞLEŞMEYEN TÜM ÜYELERİ KAZIYORUZ ⚠️
+            // ⚠️ ADIM 2: ESKİ BOZUK, ID'Sİ EŞLEŞMEYEN TÜM ÜYELERİ TEMİZLİYORUZ ⚠️
             await Uye.deleteMany({});
             console.log("Eski bozuk üye kayıtları veritabanından tamamen temizlendi!");
             await OnKayit.deleteMany({});
-            console.log("Eski ön kayıt talepleri veritabanından tamamen kazındı!");
+            console.log("Eski ön kayıt talepleri veritabanından temizlendi!");
             // ⚠️ ADIM 3: KOŞULU KALDIRDIK! ESKİ BOZUK PAKETLERİ SİLİP HAKİKİ OBJECTID TİPİNDE YAZIYORUZ ⚠️
-            // Böylece string/object çakışması ve "if (paketSayisi === 0)" engeli tamamen aşılır.
+            // Böylece string/object çakışması tamamen aşılır.
             await Paket.deleteMany({});
             await Paket.insertMany([
                 { _id: new mongoose.Types.ObjectId("664b4c730000000000000001"), paketAdi: "Standart Üyelik", aylikUcret: 2000, haftalikGiris: 3 },
@@ -58,7 +58,7 @@ mongoose.connect(process.env.MONGODB_URI)
                 { _id: new mongoose.Types.ObjectId("664b4c730000000000000003"), paketAdi: "Premium Savaşçı", aylikUcret: 20000, haftalikGiris: 6 },
                 { _id: new mongoose.Types.ObjectId("664b4c730000000000000004"), paketAdi: "Efsane Paket (VIP)", aylikUcret: 30000, haftalikGiris: 7 }
             ]);
-            console.log("Üyelik Paketleri Hakiki Mongoose ObjectId Yapısıyla Yeniden Mühürlendi!");
+            console.log("Üyelik Paketleri Mongoose ObjectId Yapısıyla Yeniden Olusturuldu!");
 
         } catch (seedHata) {
             console.log("İlk kurulum verileri yazılırken hata oluştu: ", seedHata);
